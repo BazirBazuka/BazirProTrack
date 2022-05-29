@@ -2,6 +2,7 @@
 
 namespace BazirProTrack.BL.Model
 {
+    [Serializable]
     /// <summary>
     /// Пользователь | User
     /// </summary>
@@ -43,10 +44,10 @@ namespace BazirProTrack.BL.Model
         /// <param name="weight">Вес. </param>
         /// <param name="height">Рост. </param>
         public User(string name,
-                            Gender gender,
-                            DateTime birthDate,
-                            double weight,
-                            double height)
+                    Gender gender,
+                    DateTime birthDate,
+                    double weight,
+                    double height)
         {
 
             #region Checking for exceptions

@@ -1,11 +1,13 @@
 ﻿using System;
 
+
 namespace BazirProTrack.BL.Model
 {
+    [Serializable]
     /// <summary>
     /// Пол|Gender
     /// </summary>
-     
+
     public class Gender
     {
         /// <summary>
