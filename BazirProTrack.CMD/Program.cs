@@ -27,7 +27,7 @@ namespace BazirProTrack.CMD
             var gender = Console.ReadLine();
 
             Console.WriteLine("\n\nEnter your birthday: " + " ");
-            var birthDay = DateTime.Parse(Console.ReadLine());//TODO Try pars
+            var birthDay = DateTime.Parse(Console.ReadLine());//TODO Try pars//Test gita BORIS
 
             Console.WriteLine("\n\nEnter your weight: " + " ");
             var weight = double.Parse(Console.ReadLine());

@@ -23,7 +23,7 @@ namespace BazirProTrack.BL.Controller
         public UserController(string username, string gendername, DateTime birthDay, double weight, double height)
         {
             //TODO Проверка
-            var gender = new Gender(gendername);
+            var gender = new Gender(gendername); 
             User = new User(username, gender, birthDay, weight, height);
 
         }
