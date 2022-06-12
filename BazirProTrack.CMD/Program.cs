@@ -9,35 +9,67 @@ namespace BazirProTrack.CMD
         {
 
             Console.WriteLine("Welcome to the alpha version of the program " + "BazirProTrack");
-            System.Threading.Thread.Sleep(3000);
+
             Console.Clear();
 
-            Console.WriteLine("Version a01h");
-            System.Threading.Thread.Sleep(2000);
-            Console.Clear();
 
-            Console.WriteLine("All rights reserved");
-            System.Threading.Thread.Sleep(1000);
-            Console.Clear();
 
             Console.WriteLine("First of all let's get acquainted!\n\nEnter your name: " + " ");
             var name = Console.ReadLine();
 
-            Console.WriteLine("\n\nEnter your gender: " + " ");
-            var gender = Console.ReadLine();
+            var userController = new UserController(name);
+            if (userController.IsNewUser)
+            {
+                Console.Write("Enter gender: ");
+                var gender = Console.ReadLine();
 
-            Console.WriteLine("\n\nEnter your birthday: " + " ");
-            var birthDay = DateTime.Parse(Console.ReadLine());//TODO Try pars//Test gita BORIS
+                DateTime birthDate = ParseDateTime("Birthdate");
+                double weight = ParseDouble("Weight");
+                double height = ParseDouble("Height");
 
-            Console.WriteLine("\n\nEnter your weight: " + " ");
-            var weight = double.Parse(Console.ReadLine());
+                userController.SetNewUserData(gender, birthDate, weight, height);
+            }
 
-            Console.WriteLine("\n\nEnter your height: " + " ");
-            var height = double.Parse(Console.ReadLine()); ;
+            Console.WriteLine(userController.CurentUser);
 
-            var userController = new UserController(name, gender, birthDay, weight, height);
-            userController.Save();
+        }
 
+        private static DateTime ParseDateTime(string name)
+        {
+            DateTime birthDate;
+            while (true)
+            {
+
+                Console.WriteLine($"Enter youre {name}");
+                if (DateTime.TryParse(Console.ReadLine(), out birthDate))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("ERROR! Wrong date format. ");
+                }
+            }
+
+            return birthDate;
+        }
+
+        private static double ParseDouble(string name)
+        {
+            while (true)
+            {
+
+                Console.WriteLine($"Enter youre {name}");
+                if (double.TryParse(Console.ReadLine(), out double value))
+                {
+                    return value;
+                }
+
+                else
+                {
+                    Console.WriteLine($"ERROR! Wrong {name} format. ");
+                }
+            }
         }
     }
 }

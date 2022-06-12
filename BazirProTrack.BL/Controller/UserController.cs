@@ -2,7 +2,8 @@
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 using System;
-
+using System.Collections.Generic;
+using System.Linq;
 
 namespace BazirProTrack.BL.Controller
 {
@@ -15,36 +16,72 @@ namespace BazirProTrack.BL.Controller
         /// <summary>
         /// Пользователь приложения | App user
         /// </summary>
-        public User User { get; }
+        public List<User> Users { get; }
+
+        public User CurentUser { get; }
+
+        public bool IsNewUser { get; } = false;
+
+       
 
         /// <summary>
         /// Создание нового контроллера пользователя | Creating a New User Controller
         /// </summary>
-        public UserController(string username, string gendername, DateTime birthDay, double weight, double height)
+        public UserController(string username)
         {
-            //TODO Проверка
-            var gender = new Gender(gendername); 
-            User = new User(username, gender, birthDay, weight, height);
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentNullException("User Name can't be Null or White Space", nameof(username));
+            }
+
+            Users = GetUsersData();
+
+            CurentUser = Users.SingleOrDefault(u => u.Name == username);
+            if (CurentUser == null)
+            {
+                CurentUser = new User(username);
+                Users.Add(CurentUser);
+                IsNewUser = true;
+                Save();
+            }
+
 
         }
+       
         /// <summary>
-        /// Загрузить данные пользователя | Load user data.
+        /// Получить сохроненный список пользователей| Get saved users list.
         /// </summary>
         /// <returns>Пользователь приложения | App user. </returns>
 
-        public UserController()
+        private List<User> GetUsersData()
         {
             var formater = new BinaryFormatter();
 
-            using (var fs = new FileStream("Users.dat", FileMode.OpenOrCreate))
+            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if (formater.Deserialize(fs) is User user)
+                if (fs.Length > 0 && formater.Deserialize(fs) is List<User> users)
                 {
-                    User = user;
+                    return users;
                 }
-                // TODO: Что делать если пользоваетля не прочитали?
+                else
+                {
+                    return new List<User>();
+                }
+
             }
 
+        }
+
+
+        public void SetNewUserData(string genderName, DateTime birthDate, double weight = 1, double height = 1)
+        {
+            //Проверка
+            CurentUser.Gender = new Gender(genderName);
+            CurentUser.BirthDate = birthDate;
+            CurentUser.Weight = weight;
+            CurentUser.Height = height;
+            Save();
         }
 
         /// <summary>
@@ -54,9 +91,9 @@ namespace BazirProTrack.BL.Controller
         {
             var formater = new BinaryFormatter();
 
-            using (var fs = new FileStream("User.dat", FileMode.OpenOrCreate))
+            using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                formater.Serialize(fs, User);
+                formater.Serialize(fs, Users);
             }
         }
     }

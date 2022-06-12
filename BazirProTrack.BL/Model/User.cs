@@ -17,12 +17,12 @@ namespace BazirProTrack.BL.Model
         /// <summary>
         /// Пол | Gender
         /// </summary>
-        public Gender Gender { get; }
+        public Gender Gender { get; set; }
 
         /// <summary>
         /// Дата рождения | BirthDate
         /// </summary>
-        public DateTime BirthDate { get; }
+        public DateTime BirthDate { get; set; }
 
         /// <summary>
         /// Вес | Weight
@@ -33,6 +33,20 @@ namespace BazirProTrack.BL.Model
         /// Рост | Height
         /// </summary>
         public double Height { get; set; }
+
+        /// <summary>
+        /// Возраст||Age
+        /// </summary>
+        public int Age
+        {
+            get
+            {
+                DateTime nowDate = DateTime.Today;
+                int age = nowDate.Year - BirthDate.Year;
+                if (BirthDate > nowDate.AddYears(-age)) age--;
+                return age;
+            }
+        }
         #endregion
 
         /// <summary>
@@ -85,9 +99,17 @@ namespace BazirProTrack.BL.Model
             Weight = weight;
             Height = height;
         }
+        public User(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentNullException("Username can`t be empty or null.", nameof(name));
+            }
+            Name = name;
+        }
         public override string ToString()
         {
-            return Name;
+            return Name +" "+ Age;
         }
     }
 }
