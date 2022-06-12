@@ -60,7 +60,7 @@ namespace BazirProTrack.BL.Controller
 
             using (var fs = new FileStream("users.dat", FileMode.OpenOrCreate))
             {
-                if (formater.Deserialize(fs) is List<User> users)
+                if (fs.Length > 0 && formater.Deserialize(fs) is List<User> users)
                 {
                     return users;
                 }
